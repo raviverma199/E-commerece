@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Make sure to import Bootstrap CSS
 import Accordion from '@mui/material/Accordion';
@@ -19,8 +19,39 @@ import importedimg2 from "../assets/Images/image_6.png"
 import importedimg3 from "../assets/Images/image_7.png"
 import importedimg4 from "../assets/Images/image_8.png"
 import sellerimg from "../assets/Images/Rectangle 58.png"
+import phone_Img from "../assets/Images/phone.jpg"
+import axios from "axios";
+
+
+// ============================-  sending data in database ===============================
+
+
 
 export default function Landing_page() {
+  const [formData, setFormData] = useState({name:'',email:'',phone:'',message:''});
+
+  const  handleChange = (e) => {
+    const name = e.target.name;
+    const  value = e.target.value;
+    setFormData({...formData,[name]: value});
+  }
+
+
+  const  submitHandler = (e)=>{
+    try {
+      axios.post('http://localhost:3001/api/sendData', formData)
+      .then(response => {
+        console.log(response.data); // Response from the server
+      })
+      .catch(error => {
+        console.error('Error sending data:', error);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
   return (
     <>
       {/* ==============================   section no 1 =============================== */}
@@ -563,7 +594,9 @@ export default function Landing_page() {
 <h1>We'd Love to hear<br/> from you!</h1>
 <p>Experince the luxury of quality fabric though our appointment <br/>
 feature, where you can feel and touch each textile, ensuring <br/>satasfaction.</p>
-
+<div class="image-container">
+  <img src={phone_Img} alt="" class="" />
+</div>
   </div>
 
   {/* ==========================  form section ======================================= */}
@@ -574,24 +607,24 @@ feature, where you can feel and touch each textile, ensuring <br/>satasfaction.<
     {/* <label htmlFor="exampleInputEmail1" className="form-label">
       Your Name
     </label> */}
-    <input type="text" placeholder="Your Name" className="form-control border-dark border-1" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+    <input type="text" onChange={handleChange} placeholder="Your Name" name="name" className="form-control border-dark border-1"  aria-describedby="emailHelp"/>
   </div>
   <div className="mb-3">
     {/* <label htmlFor="exampleInputPassword1" className="form-label">
     Email
     </label> */}
-    <input type="email" className="form-control border-dark border-1" placeholder="Email" id="exampleInputPassword1"/>
+    <input type="email" onChange={handleChange} className="form-control border-dark border-1" name="email" placeholder="Email" id="exampleInputPassword1"/>
   </div>
 
   <div className="mb-3">
     {/* <label htmlFor="exampleInputPassword1" className="form-label">
     Phone No
     </label> */}
-    <input type="text"  className="form-control border-dark border-1" placeholder="phone" id="exampleInputPassword1"/>
+    <input type="text" onChange={handleChange}  className="form-control border-dark border-1" name="phone" placeholder="phone" id="exampleInputPassword1"/>
   </div>
 
   <div class="form">
-  <textarea class="form-control border-dark border-1" rows={4} placeholder="your message" id="floatingTextarea"></textarea>
+  <textarea class="form-control border-dark border-1" onChange={handleChange} rows={4} name="message" placeholder="your message" id="floatingTextarea"></textarea>
 </div>
   
   <div className="col-lg-12 d-flex justify-content-end mt-5">
