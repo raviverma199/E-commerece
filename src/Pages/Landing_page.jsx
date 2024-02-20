@@ -39,9 +39,9 @@ export default function Landing_page() {
 
   const  submitHandler = (e)=>{
     try {
-      axios.post('http://localhost:3001/api/sendData', formData)
+      axios.post('http://localhost:9090/api/datapost', formData)
       .then(response => {
-        console.log(response.data); // Response from the server
+        console.log(response.data); 
       })
       .catch(error => {
         console.error('Error sending data:', error);
@@ -628,7 +628,7 @@ feature, where you can feel and touch each textile, ensuring <br/>satasfaction.<
 </div>
   
   <div className="col-lg-12 d-flex justify-content-end mt-5">
-  <button type="submit" className="btn btn-danger rounded-5">
+  <button type="submit" className="btn btn-danger rounded-5" onClick={submitHandler}>
     Submit
   </button>
   </div>
